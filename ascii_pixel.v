@@ -17,7 +17,7 @@ module ascii_pixel(
 
 // This comes from the GPLv3 licensed source (http://opengameart.org/content/8x8-ascii-bitmap-font-with-c-source).
     assign pixels = {
-        64'h7E7E7E7E7E7E0000, /* NUL */
+        64'h0000000000000000, /* NUL */
         64'h7E7E7E7E7E7E0000, /* SOH */
         64'h7E7E7E7E7E7E0000, /* STX */
         64'h7E7E7E7E7E7E0000, /* ETX */
