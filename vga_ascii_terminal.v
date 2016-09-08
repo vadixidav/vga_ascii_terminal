@@ -15,8 +15,10 @@ module vga_ascii_terminal(
     parameter WIDTH = 80;
     parameter HEIGHT_BITS = 6;
     parameter HEIGHT = 60;
-    parameter BLINK_BITS = 25;
-    parameter BLINK_PERIOD = 25000000;
+    parameter BLINK_BITS = 27;
+    parameter BLINK_PERIOD = 100000000;
+    parameter VGA_DOWNCLOCK_BITS = 2;
+    parameter VGA_DOWNCLOCK_PERIOD = 1 << VGA_DOWNCLOCK_BITS;
 
     input clk, reset;
     output white, h_sync, v_sync;
@@ -29,13 +31,14 @@ module vga_ascii_terminal(
     reg [6:0] char_display;
 
     reg [BLINK_BITS-1:0] blink_counter;
+    reg [VGA_DOWNCLOCK_BITS-1:0] vga_counter;
 
     reg [6:0] characters [WIDTH*HEIGHT-1:0];
     reg [HEIGHT_BITS-1:0] row_bottom;
     reg [WIDTH_BITS-1:0] row_columns [HEIGHT-1:0];
 
     vga vga(
-        .clk,
+        .clk(vga_counter == 0),
         .reset,
         .h_counter_next,
         .h_sync,
@@ -65,6 +68,7 @@ module vga_ascii_terminal(
 
     always @(posedge clk) begin
         if (reset) begin
+            vga_counter <= 0;
             for (i = 0; i < WIDTH; i = i + 1)
                 row_columns[i] <= 0;
             row_bottom <= 0;
@@ -72,6 +76,10 @@ module vga_ascii_terminal(
                 characters[i] <= 0;
             blink_counter <= 0;
         end else begin
+            if (vga_counter == 0)
+                vga_counter <= VGA_DOWNCLOCK_PERIOD - 1;
+            else
+                vga_counter <= vga_counter - 1;
             if (blink_counter == 0)
                 blink_counter <= BLINK_PERIOD - 1;
             else
