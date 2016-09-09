@@ -69,7 +69,7 @@ module vga_ascii_terminal(
     always @(posedge clk) begin
         if (reset) begin
             vga_counter <= 0;
-            for (i = 0; i < WIDTH; i = i + 1)
+            for (i = 0; i < HEIGHT; i = i + 1)
                 row_columns[i] <= 0;
             row_bottom <= 0;
             for (i = 0; i < WIDTH*HEIGHT; i = i + 1)
