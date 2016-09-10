@@ -13,7 +13,7 @@ module ascii_pixel(
 
     wire [64*128-1:0] pixels;
 
-    assign pixel = pixels[(3'h7 - xpos) + ypos * 8 + char * 64];
+    assign white = pixels[(3'h7 - xpos) + ypos * 8 + char * 64];
 
 // This comes from the GPLv3 licensed source (http://opengameart.org/content/8x8-ascii-bitmap-font-with-c-source).
     assign pixels = {
