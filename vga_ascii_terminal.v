@@ -54,7 +54,7 @@ module vga_ascii_terminal(
         .white
         );
 
-    int i;
+    integer i;
 
     always @* begin
         if (v_counter_next[9:3] == row_bottom && h_counter_next[9:3] == row_columns[row_bottom])
